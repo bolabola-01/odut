@@ -163,20 +163,35 @@ function PaperDoodles() {
 }
 
 function SoundtrackShell({ active, children }: { active: boolean; children: ReactNode }) {
+  const [playerOpen, setPlayerOpen] = useState(false);
+
   return (
     <>
       {active && (
-        <aside className="opening-soundtrack" aria-label="Opening birthday soundtrack">
-          <p><span>♪</span> now playing: Every Summertime</p>
-          <iframe
-            src="https://open.spotify.com/embed/track/68HocO7fx9z0MgDU0ZPHro?utm_source=generator&theme=0&autoplay=1"
-            width="100%"
-            height="80"
-            frameBorder="0"
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-            loading="eager"
-            title="Every Summertime by NIKI"
-          />
+        <aside className="soundtrack-control" aria-label="Opening birthday soundtrack">
+          <button
+            className="soundtrack-toggle"
+            onClick={() => setPlayerOpen((open) => !open)}
+            aria-expanded={playerOpen}
+            aria-controls="birthday-soundtrack-player"
+          ><span>♪</span> music</button>
+          <div
+            id="birthday-soundtrack-player"
+            className={playerOpen ? "soundtrack-popover open" : "soundtrack-popover"}
+            aria-hidden={!playerOpen}
+          >
+            <p><span>♪</span> now playing: Every Summertime</p>
+            <iframe
+              src="https://open.spotify.com/embed/track/68HocO7fx9z0MgDU0ZPHro?utm_source=generator&theme=0&autoplay=1"
+              width="100%"
+              height="80"
+              frameBorder="0"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="eager"
+              tabIndex={playerOpen ? 0 : -1}
+              title="Every Summertime by NIKI"
+            />
+          </div>
         </aside>
       )}
       {children}
@@ -211,6 +226,16 @@ export default function BirthdayZine() {
     };
   }, [voiceUrl]);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    const stream = streamRef.current;
+    if (!cameraStarted || !video || !stream) return;
+    if (video.srcObject !== stream) video.srcObject = stream;
+    void video.play().catch(() => {
+      setCameraError("Tap Open camera again if Safari pauses the preview.");
+    });
+  }, [cameraStarted, boothPhotos.length]);
+
   const startCamera = async () => {
     setCameraError("");
     try {
@@ -220,9 +245,6 @@ export default function BirthdayZine() {
       });
       streamRef.current = stream;
       setCameraStarted(true);
-      requestAnimationFrame(() => {
-        if (videoRef.current) videoRef.current.srcObject = stream;
-      });
     } catch {
       setCameraError("Camera permission wasn’t available — you can still continue.");
     }
@@ -244,10 +266,6 @@ export default function BirthdayZine() {
     if (nextPhotos.length >= boothSlots.length) {
       streamRef.current?.getTracks().forEach((track) => track.stop());
       setCameraStarted(false);
-    } else {
-      requestAnimationFrame(() => {
-        if (videoRef.current && streamRef.current) videoRef.current.srcObject = streamRef.current;
-      });
     }
   };
 
