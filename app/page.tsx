@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 
 const birthday = {
@@ -162,8 +162,31 @@ function PaperDoodles() {
   );
 }
 
+function SoundtrackShell({ active, children }: { active: boolean; children: ReactNode }) {
+  return (
+    <>
+      {active && (
+        <aside className="opening-soundtrack" aria-label="Opening birthday soundtrack">
+          <p><span>♪</span> now playing: Every Summertime</p>
+          <iframe
+            src="https://open.spotify.com/embed/track/68HocO7fx9z0MgDU0ZPHro?utm_source=generator&theme=0&autoplay=1"
+            width="100%"
+            height="80"
+            frameBorder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="eager"
+            title="Every Summertime by NIKI"
+          />
+        </aside>
+      )}
+      {children}
+    </>
+  );
+}
+
 export default function BirthdayZine() {
   const [stage, setStage] = useState<Stage>("identity");
+  const [soundtrackStarted, setSoundtrackStarted] = useState(false);
   const [rejected, setRejected] = useState(false);
   const [section, setSection] = useState<Section>("menu");
   const [cameraStarted, setCameraStarted] = useState(false);
@@ -304,7 +327,8 @@ export default function BirthdayZine() {
 
   if (stage === "identity") {
     return (
-      <main className="stage-shell">
+      <SoundtrackShell active={soundtrackStarted}>
+        <main className="stage-shell">
         <section className="zine-page identity-page">
           <PaperDoodles />
           <p className="eyebrow">this little website belongs to</p>
@@ -315,7 +339,7 @@ export default function BirthdayZine() {
           <h1>Are you<br /><em>{birthday.name}?</em></h1>
           {!rejected ? (
             <div className="button-row">
-              <button className="paper-button primary" onClick={() => setStage("cake")}>Yes, that’s me</button>
+              <button className="paper-button primary" onClick={() => { setSoundtrackStarted(true); setStage("cake"); }}>Yes, that’s me</button>
               <button className="paper-button" onClick={() => setRejected(true)}>Nope</button>
             </div>
           ) : (
@@ -325,13 +349,15 @@ export default function BirthdayZine() {
             </div>
           )}
         </section>
-      </main>
+        </main>
+      </SoundtrackShell>
     );
   }
 
   if (stage === "cake") {
     return (
-      <main className="stage-shell blue-stage">
+      <SoundtrackShell active={soundtrackStarted}>
+        <main className="stage-shell blue-stage">
         <section className="zine-page cake-page">
           <PaperDoodles />
           <p className="eyebrow">make a wish</p>
@@ -346,13 +372,15 @@ export default function BirthdayZine() {
           <button className="paper-button primary" onClick={() => setStage("celebrate")}>Blow the candle</button>
           <p className="tiny-note">tap the button — wishes are private</p>
         </section>
-      </main>
+        </main>
+      </SoundtrackShell>
     );
   }
 
   if (stage === "celebrate") {
     return (
-      <main className="stage-shell celebration-stage">
+      <SoundtrackShell active={soundtrackStarted}>
+        <main className="stage-shell celebration-stage">
         <Confetti />
         <section className="zine-page celebration-page">
           <div className="childhood-reveal">
@@ -370,13 +398,15 @@ export default function BirthdayZine() {
           </p>
           <button className="paper-button primary" onClick={() => setStage("camera")}>Capture this moment 📸</button>
         </section>
-      </main>
+        </main>
+      </SoundtrackShell>
     );
   }
 
   if (stage === "camera") {
     return (
-      <main className="stage-shell camera-stage">
+      <SoundtrackShell active={soundtrackStarted}>
+        <main className="stage-shell camera-stage">
         <section className="zine-page camera-page">
           <p className="eyebrow">birthday photobooth</p>
           <h1>Say <em>twenty-four!</em></h1>
@@ -412,12 +442,14 @@ export default function BirthdayZine() {
           </div>
           <button className="text-button" onClick={enterHome}>{boothPhotos.length === 4 ? "Go to home →" : "Skip and go home →"}</button>
         </section>
-      </main>
+        </main>
+      </SoundtrackShell>
     );
   }
 
   return (
-    <main className="site-shell">
+    <SoundtrackShell active={soundtrackStarted}>
+      <main className="site-shell">
       <header className="site-header">
         <button className="brand" onClick={() => setSection("menu")} aria-label="Go to birthday zine home">
           <span>♥</span> {birthday.name}’s birthday zine
@@ -692,6 +724,7 @@ export default function BirthdayZine() {
           </button>
         ))}
       </nav>
-    </main>
+      </main>
+    </SoundtrackShell>
   );
 }
