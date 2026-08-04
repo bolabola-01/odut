@@ -18,6 +18,7 @@ type Section =
   | "achievements"
   | "memories"
   | "wish"
+  | "notes"
   | "voice"
   | "gift";
 
@@ -27,8 +28,36 @@ const sections: { id: Section; icon: string; title: string; note: string }[] = [
   { id: "achievements", icon: "♥", title: "Your wins", note: "look how far you’ve come" },
   { id: "memories", icon: "⌁", title: "Memories", note: "our favorite frames" },
   { id: "wish", icon: "✉", title: "My wish", note: "a letter just for you" },
+  { id: "notes", icon: "24", title: "24 notes", note: "for your 24th birthday" },
   { id: "voice", icon: "◖", title: "Voice note", note: "listen with earphones" },
   { id: "gift", icon: "★", title: "Your present", note: "save this one for last" },
+];
+
+const birthdayNotes = [
+  "happy 24th birthday to my favorite person 🤍",
+  "i’m so proud of the man you are and everything you’re becoming.",
+  "i love how hardworking and ambitious you are.",
+  "you inspire me to dream bigger and work harder.",
+  "thank you for always trying to make me happy.",
+  "i love your strength, but i love your soft side even more.",
+  "you make me feel safe, loved, and cared for.",
+  "i’m grateful for every conversation, every laugh, and every moment with you.",
+  "even when we’re far apart, you still feel like home to me.",
+  "i wish i could be there to celebrate you properly today.",
+  "thank you for choosing me and letting me be part of your life.",
+  "i love how passionate you are about the things you care about.",
+  "you deserve every good thing that is coming your way.",
+  "i hope 24 brings you closer to all your biggest dreams.",
+  "i’ll always be your biggest supporter and loudest cheerleader.",
+  "i love the way you make ordinary moments feel special.",
+  "thank you for being patient with me, even when i’m difficult.",
+  "i hope you always remember how loved you are.",
+  "you’re one of the greatest blessings in my life.",
+  "i’m so lucky that i get to love you.",
+  "no matter how busy life gets, i’ll always make space for you.",
+  "i can’t wait to create more memories with you.",
+  "a year closer to becoming naruto six paths sage mode.",
+  "happy birthday, my love. i love you more than these 24 notes could ever explain 🤍",
 ];
 
 const quiz = [
@@ -543,6 +572,24 @@ export default function BirthdayZine() {
               <p>thank you for being you, for choosing me, and for making my life happier just by being in it. happy birthday, sayang. i love you so much 🤍</p>
               <strong>with all my love, always ♡</strong>
             </article>
+          </div>
+        )}
+
+        {section === "notes" && (
+          <div className="notes-page">
+            <p className="eyebrow">twenty-four little reminders</p>
+            <h2>24 notes for <em>your 24th</em></h2>
+            <p className="notes-intro">A tiny collection of all the things I hope you always remember, sayang.</p>
+            <div className="notes-grid">
+              {birthdayNotes.map((note, index) => (
+                <article className="love-note" key={note}>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <p>{note}</p>
+                  <i aria-hidden="true">{index === 22 ? "✦" : "♥"}</i>
+                </article>
+              ))}
+            </div>
+            <p className="notes-finale">24 years of you — and I still have so much more love to give. ♡</p>
           </div>
         )}
 

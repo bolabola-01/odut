@@ -202,11 +202,12 @@ h1 em, h2 em {
 .card-2, .card-5 { background: var(--blue); }
 .card-4 { background: var(--red); color: var(--paper); transform: rotate(1deg); }
 .card-4 > span, .card-4 small { color: var(--paper); }
-.card-7 { grid-column: span 2; background: var(--navy); color: var(--paper); }
-.card-7 > span { color: var(--lilac); }
-.card-7 small { color: var(--paper); }
+.card-7 { background: #ded3e3; transform: rotate(-1deg); }
+.card-8 { grid-column: span 2; background: var(--navy); color: var(--paper); }
+.card-8 > span { color: var(--lilac); }
+.card-8 small { color: var(--paper); }
 
-.section-layout, .letter-page, .voice-page, .gift-page, .achievement-page, .memory-page { min-height: 680px; padding: clamp(32px, 7vw, 84px); background: var(--paper); box-shadow: 0 18px 50px var(--shadow); }
+.section-layout, .letter-page, .voice-page, .gift-page, .achievement-page, .memory-page, .notes-page { min-height: 680px; padding: clamp(32px, 7vw, 84px); background: var(--paper); box-shadow: 0 18px 50px var(--shadow); }
 .section-layout, .voice-page { display: grid; grid-template-columns: .85fr 1.15fr; align-items: center; gap: clamp(36px, 7vw, 90px); }
 .section-copy > p:not(.eyebrow) { color: var(--navy); line-height: 1.7; }
 .vinyl-wrap { text-align: center; color: var(--red); font: 600 20px "Caveat"; }
@@ -311,6 +312,18 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--red); }
 .coupon span, .coupon small { color: var(--red); letter-spacing: .12em; font-size: 10px; }.coupon strong { font: 600 26px "Caveat"; }
 .final-note { margin: 36px auto 0; color: var(--red); font: 600 29px "Caveat"; }
 
+.notes-page { text-align: center; }
+.notes-intro { max-width: 620px; margin: 20px auto 0; color: var(--navy); line-height: 1.7; }
+.notes-grid { margin-top: 48px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; align-items: stretch; }
+.love-note { min-height: 230px; padding: 24px 20px; border: 1.5px solid var(--navy); background: var(--paper); box-shadow: 6px 8px 0 var(--blue); display: flex; flex-direction: column; text-align: left; transform: rotate(-1deg); }
+.love-note:nth-child(2n) { background: var(--blue); transform: rotate(1deg); }
+.love-note:nth-child(3n) { background: #ded3e3; transform: rotate(-.5deg); }
+.love-note:nth-child(4n) { background: #efe0c5; transform: rotate(1.5deg); }
+.love-note span { color: var(--red); font: 600 30px "Caveat"; }
+.love-note p { margin: auto 0; color: var(--navy); line-height: 1.55; }
+.love-note i { color: var(--red); align-self: flex-end; font-style: normal; }
+.notes-finale { margin: 48px auto 0; color: var(--red); font: 600 30px "Caveat"; }
+
 .bottom-nav { position: fixed; z-index: 50; left: 50%; bottom: 18px; width: min(calc(100% - 28px), 890px); min-height: 70px; padding: 8px; transform: translateX(-50%); display: flex; justify-content: space-around; gap: 3px; overflow-x: auto; background: rgba(38,62,90,.95); box-shadow: 0 16px 38px rgba(38,62,90,.28); border-radius: 4px; scrollbar-width: none; }
 .bottom-nav button { flex: 1 0 82px; min-height: 52px; padding: 5px 7px; border: 0; background: transparent; color: rgba(255,253,246,.75); font-size: 10px; cursor: pointer; display: grid; place-items: center; gap: 2px; }
 .bottom-nav button span { font: 600 20px "Caveat"; }.bottom-nav button.active { background: var(--paper); color: var(--red); }
@@ -320,7 +333,8 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--red); }
   .home-hero { padding-bottom: 48px; }
   .cover-collage { min-height: 250px; }
   .section-grid { grid-template-columns: repeat(2, 1fr); }
-  .card-7 { grid-column: span 2; }
+  .card-8 { grid-column: span 2; }
+  .notes-grid { grid-template-columns: repeat(2, 1fr); }
   .playing-cards { grid-template-columns: repeat(2, 1fr); }
   .photo-strip { grid-template-columns: repeat(2, 1fr); }
   .envelope { max-width: 400px; width: 100%; margin: 0 auto; }
@@ -337,7 +351,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--red); }
   .site-shell { padding: 76px 12px 108px; }
   .site-header { min-height: 56px; }
   .site-header p { display: none; }
-  .home-hero, .section-layout, .letter-page, .voice-page, .gift-page, .achievement-page, .memory-page { padding: 34px 22px; min-height: calc(100svh - 190px); }
+  .home-hero, .section-layout, .letter-page, .voice-page, .gift-page, .achievement-page, .memory-page, .notes-page { padding: 34px 22px; min-height: calc(100svh - 190px); }
   .home-hero { grid-template-columns: 1fr; gap: 10px; }
   .home-hero h1 { font-size: 56px; }
   .section-grid { gap: 10px; }
@@ -352,6 +366,8 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--red); }
   .date-ticket { grid-template-columns: 1fr; }
   .date-ticket > span { grid-column: auto; }
   .coupon-grid { grid-template-columns: 1fr; }
+  .notes-grid { grid-template-columns: 1fr; gap: 15px; }
+  .love-note { min-height: 205px; }
   .decision-area { gap: 8px; }
   .decision-area .paper-button { padding: 10px 13px; }
   .bottom-nav { bottom: 8px; min-height: 64px; }
