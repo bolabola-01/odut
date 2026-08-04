@@ -167,7 +167,7 @@ h1 em, h2 em {
 .photo-booth { width: min(100%, 500px); aspect-ratio: 2/3; margin: 18px auto 10px; position: relative; background: var(--paper); box-shadow: 9px 13px 0 rgba(38,62,90,.17); transform: rotate(-.6deg); overflow: hidden; }
 .booth-template { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; }
 .booth-slot { position: absolute; z-index: 2; overflow: hidden; background: rgba(183,204,223,.24); }
-.booth-slot img, .booth-slot video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.booth-slot img, .booth-slot video { width: 100%; height: 100%; object-fit: contain; display: block; background: var(--paper); }
 .booth-slot video { transform: scaleX(-1); }
 .empty-frame { width: 100%; height: 100%; display: grid; place-items: center; align-content: center; gap: 4px; color: var(--navy); background: rgba(255,253,246,.76); }
 .empty-frame span { font-size: 36px; }.empty-frame small { color: var(--red); font: 600 17px "Caveat"; }

@@ -97,10 +97,10 @@ const coupons = [
 ];
 
 const boothSlots = [
-  { left: "8.6%", top: "27.1%", width: "39.2%", height: "28.8%", x: 88, y: 416, w: 401, h: 443 },
-  { left: "52.2%", top: "27.1%", width: "38.7%", height: "28.8%", x: 535, y: 416, w: 396, h: 443 },
-  { left: "8.7%", top: "59.5%", width: "39.1%", height: "32.0%", x: 89, y: 914, w: 400, h: 492 },
-  { left: "52.3%", top: "59.5%", width: "38.4%", height: "32.0%", x: 536, y: 914, w: 393, h: 492 },
+  { left: "8.8%", top: "27.7%", width: "38.1%", height: "27.4%", x: 90, y: 425, w: 390, h: 420 },
+  { left: "53.2%", top: "27.7%", width: "36.9%", height: "27.4%", x: 545, y: 425, w: 378, h: 420 },
+  { left: "9.3%", top: "60.2%", width: "37.3%", height: "29.6%", x: 95, y: 925, w: 382, h: 455 },
+  { left: "53.2%", top: "60.2%", width: "36.6%", height: "29.6%", x: 545, y: 925, w: 375, h: 455 },
 ];
 
 function Confetti() {
@@ -218,7 +218,7 @@ export default function BirthdayZine() {
       image.onerror = reject;
       image.src = src;
     });
-    const drawCover = (
+    const drawContain = (
       context: CanvasRenderingContext2D,
       image: HTMLImageElement,
       x: number,
@@ -226,12 +226,12 @@ export default function BirthdayZine() {
       width: number,
       height: number,
     ) => {
-      const scale = Math.max(width / image.naturalWidth, height / image.naturalHeight);
-      const sourceWidth = width / scale;
-      const sourceHeight = height / scale;
-      const sourceX = (image.naturalWidth - sourceWidth) / 2;
-      const sourceY = (image.naturalHeight - sourceHeight) / 2;
-      context.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, x, y, width, height);
+      const scale = Math.min(width / image.naturalWidth, height / image.naturalHeight);
+      const drawWidth = image.naturalWidth * scale;
+      const drawHeight = image.naturalHeight * scale;
+      const drawX = x + (width - drawWidth) / 2;
+      const drawY = y + (height - drawHeight) / 2;
+      context.drawImage(image, drawX, drawY, drawWidth, drawHeight);
     };
     try {
       const output = document.createElement("canvas");
@@ -244,7 +244,7 @@ export default function BirthdayZine() {
       const photos = await Promise.all(boothPhotos.map(loadImage));
       photos.forEach((photo, index) => {
         const slot = boothSlots[index];
-        drawCover(context, photo, slot.x, slot.y, slot.w, slot.h);
+        drawContain(context, photo, slot.x, slot.y, slot.w, slot.h);
       });
       const link = document.createElement("a");
       link.href = output.toDataURL("image/jpeg", 0.94);
