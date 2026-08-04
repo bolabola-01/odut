@@ -210,7 +210,6 @@ export default function BirthdayZine() {
   const [quizIndex, setQuizIndex] = useState(0);
   const [quizScore, setQuizScore] = useState(0);
   const [quizDone, setQuizDone] = useState(false);
-  const [voiceUrl, setVoiceUrl] = useState("");
   const [giftOpen, setGiftOpen] = useState(false);
   const [dateAccepted, setDateAccepted] = useState(false);
   const [noRun, setNoRun] = useState(0);
@@ -222,9 +221,8 @@ export default function BirthdayZine() {
   useEffect(() => {
     return () => {
       streamRef.current?.getTracks().forEach((track) => track.stop());
-      if (voiceUrl) URL.revokeObjectURL(voiceUrl);
     };
-  }, [voiceUrl]);
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -655,21 +653,14 @@ export default function BirthdayZine() {
             <div className="section-copy">
               <p className="eyebrow">put on your earphones</p>
               <h2>A tiny message <em>from me</em></h2>
-              <p>Choose your recording to preview this page. When the final audio is added to the site, his message will be waiting right here.</p>
-              <label className="paper-button file-button">
-                Choose voice recording
-                <input
-                  type="file"
-                  accept="audio/*"
-                  onChange={(event) => {
-                    const file = event.target.files?.[0];
-                    if (!file) return;
-                    if (voiceUrl) URL.revokeObjectURL(voiceUrl);
-                    setVoiceUrl(URL.createObjectURL(file));
-                  }}
-                />
-              </label>
-              {voiceUrl && <audio controls src={voiceUrl}>Your browser does not support audio playback.</audio>}
+              <p>This one is just for you, sayang. Find somewhere quiet, put on your earphones, and press play. ♡</p>
+              <div className="voice-player">
+                <span>FOR OAN • WITH LOVE</span>
+                <audio controls preload="metadata" aria-label="Birthday voice note for Oan">
+                  <source src="/voice-note.m4a" type="audio/mp4" />
+                  Your browser does not support audio playback.
+                </audio>
+              </div>
             </div>
           </div>
         )}
