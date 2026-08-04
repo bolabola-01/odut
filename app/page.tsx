@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 
 const birthday = {
   name: "Oan",
+  fullName: "Reynhart Henry Halomoan",
   age: 24,
   from: "the girl who loves you most",
 };
@@ -32,20 +33,60 @@ const sections: { id: Section; icon: string; title: string; note: string }[] = [
 
 const quiz = [
   {
-    question: "Who is your biggest fan?",
-    options: ["Your mom", "Me, obviously", "Your group chat"],
+    series: "NARUTO",
+    question: "Which Path of Pain uses the King of Hell for interrogation and restoration?",
+    options: ["Human Path", "Naraka Path", "Asura Path", "Preta Path"],
     answer: 1,
   },
   {
-    question: "What should you bring to our Jakarta date?",
-    options: ["A full itinerary", "Just yourself", "A spreadsheet"],
+    series: "ONE PIECE",
+    question: "What is the full name of the Devil Fruit eaten by Kaku?",
+    options: ["Neko Neko no Mi, Model: Giraffe", "Ushi Ushi no Mi, Model: Giraffe", "Uma Uma no Mi, Model: Giraffe", "Hito Hito no Mi, Model: Giraffe"],
     answer: 1,
   },
   {
-    question: "How loved are you today?",
-    options: ["A little", "A lot", "More than this page can fit"],
+    series: "NARUTO",
+    question: "What is the true name of the Island Turtle where Naruto trained with Killer B?",
+    options: ["Ningame", "Genbu", "Katsuyu", "Kamejima"],
+    answer: 1,
+  },
+  {
+    series: "ONE PIECE",
+    question: "What is the name of Enel’s colossal flying ark?",
+    options: ["Noah", "Maxim", "Pluton", "Ark Corona"],
+    answer: 1,
+  },
+  {
+    series: "NARUTO",
+    question: "Which sword of the Seven Ninja Swordsmen uses explosive tags along its blade?",
+    options: ["Kabutowari", "Hiramekarei", "Shibuki", "Nuibari"],
     answer: 2,
   },
+  {
+    series: "ONE PIECE",
+    question: "Which kingdom was explorer Mont Blanc Noland born in?",
+    options: ["Goa Kingdom", "Lvneel Kingdom", "Sorbet Kingdom", "Briss Kingdom"],
+    answer: 1,
+  },
+  {
+    series: "NARUTO",
+    question: "Who was the famed wielder of the blastsword Shibuki?",
+    options: ["Jinin Akebino", "Kushimaru Kuriarare", "Jinpachi Munashi", "Ameyuri Ringo"],
+    answer: 2,
+  },
+  {
+    series: "ONE PIECE",
+    question: "What is the name of Tom’s only fully functioning Sea Train?",
+    options: ["Rocketman", "Puffing Tom", "Aqua Laguna", "Sea Rabbit"],
+    answer: 1,
+  },
+];
+
+const spotifyTracks = [
+  { id: "2TEQvxxQabwLQMqWMg1qGu", note: "a song that makes me think of you" },
+  { id: "1lORkxEMmsCZqhoxcmk3A3", note: "for the moments when I miss you" },
+  { id: "35o9a4iAfLl5jRmqMX9c1D", note: "a little piece of our soundtrack" },
+  { id: "4y5bvROuBDPr5fuwXbIBZR", note: "one more, because you deserve an encore" },
 ];
 
 const coupons = [
@@ -294,9 +335,9 @@ export default function BirthdayZine() {
             <span aria-hidden="true">♥</span>
           </div>
           <p className="eyebrow">the candle is out!</p>
-          <h1>Happy birthday,<br /><em>{birthday.name}</em></h1>
+          <h1>Happy 24th birthday,<br /><em>my love 🤍</em></h1>
           <p className="lead-copy">
-            I hope {birthday.age} brings you closer to every dream you’ve been working toward — and gives you even more reasons to be proud of yourself.
+            I’m so proud of the man you are, sayang — hardworking, ambitious, strong, and always determined to build the life you want.
           </p>
           <button className="paper-button primary" onClick={() => setStage("camera")}>Capture this moment 📸</button>
         </section>
@@ -362,6 +403,7 @@ export default function BirthdayZine() {
               <div>
                 <p className="eyebrow">a little book about</p>
                 <h1>The <em>birthday boy</em></h1>
+                <p className="full-name">{birthday.fullName} • {birthday.name} • {birthday.age}</p>
                 <p>Take your time. Every page was made with a ridiculous amount of love.</p>
               </div>
               <div className="cover-collage" aria-hidden="true">
@@ -399,10 +441,20 @@ export default function BirthdayZine() {
             <div className="section-copy">
               <p className="eyebrow">songs that remind me of you</p>
               <h2>Our little <em>soundtrack</em></h2>
-              <div className="track-list">
-                {["The song that feels like our beginning", "The one I play when I miss you", "The song for our next drive"].map((track, index) => (
-                  <div className="track" key={track}>
-                    <b>0{index + 1}</b><span>{track}<small>Add your chosen song + note here</small></span><i>♪</i>
+              <div className="spotify-list">
+                {spotifyTracks.map((track, index) => (
+                  <div className="spotify-card" key={track.id}>
+                    <p><b>0{index + 1}</b> {track.note}</p>
+                    <iframe
+                      src={`https://open.spotify.com/embed/track/${track.id}?utm_source=generator&theme=0`}
+                      width="100%"
+                      height="152"
+                      frameBorder="0"
+                      allowFullScreen
+                      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                      loading="lazy"
+                      title={`Spotify song ${index + 1} for ${birthday.name}`}
+                    />
                   </div>
                 ))}
               </div>
@@ -412,15 +464,19 @@ export default function BirthdayZine() {
 
         {section === "games" && (
           <div className="section-layout game-layout">
-            <div className="maze-card" aria-hidden="true">
-              <p>how can you get to me?</p>
-              <div className="maze-lines">╔═╗ ╔══╗<br />║ ╚═╝╔ ║<br />╠══╗ ║ ║<br />║ ╔╝ ╚═╣<br />╚═╝ ♥ ═╝</div>
+            <div className="anime-card" aria-hidden="true">
+              <span className="ninja-mark">忍</span>
+              <p>NARUTO</p>
+              <b>×</b>
+              <p>ONE PIECE</p>
+              <span className="pirate-mark">☠</span>
+              <small>eight questions • no easy mode</small>
             </div>
             <div className="quiz-card">
-              <p className="eyebrow">birthday pop quiz</p>
+              <p className="eyebrow">shinobi × pirate trivia</p>
               {!quizDone ? (
                 <>
-                  <span className="quiz-count">{quizIndex + 1} / {quiz.length}</span>
+                  <span className="quiz-count"><b>{quiz[quizIndex].series}</b> • {quizIndex + 1} / {quiz.length}</span>
                   <h2>{quiz[quizIndex].question}</h2>
                   <div className="quiz-options">
                     {quiz[quizIndex].options.map((option, index) => (
@@ -431,7 +487,7 @@ export default function BirthdayZine() {
               ) : (
                 <div className="quiz-result">
                   <span>♥</span>
-                  <h2>{quizScore}/{quiz.length} — still my favorite person.</h2>
+                  <h2>{quizScore}/{quiz.length} — {quizScore === quiz.length ? "Hokage and Pirate King level." : quizScore >= 6 ? "elite shinobi-pirate status." : "time for a rewatch, sayang."}</h2>
                   <button className="paper-button" onClick={resetQuiz}>Play again</button>
                 </div>
               )}
@@ -445,10 +501,12 @@ export default function BirthdayZine() {
             <h2>Look at everything <em>you’ve become</em></h2>
             <div className="playing-cards">
               {[
-                ["01", "Becoming more you", "You keep growing into someone brave, kind, and entirely your own."],
-                ["02", "All the quiet wins", "The progress nobody sees still counts. I see it, and I’m proud."],
-                ["03", "Showing up", "For your dreams, your people, and for us — even on difficult days."],
-                ["24", "This new chapter", "A whole new year of chances, stories, and reasons to celebrate you."],
+                ["01", "The way you care", "You once paid off all of a Gojek driver’s debt simply because you felt for him. Your kindness is never just something you say — you act on it."],
+                ["02", "Your brilliant mind", "Your very first job is at BCG. That says so much about how smart, capable, and hardworking you are."],
+                ["03", "Logical and soft", "You think so clearly and logically, yet underneath it all you have the softest, most caring heart."],
+                ["04", "Your ambition", "You know the life you want and you keep working toward it with focus, courage, and determination."],
+                ["05", "How you show up", "You make the people you love feel cared for through the thoughtful things you do, even when nobody is watching."],
+                ["24", "The man you’re becoming", "Every year adds another reason to admire you. I’m endlessly proud to stand beside you and watch you grow."],
               ].map(([number, title, copy], index) => (
                 <article className={`achievement-card tilt-${index}`} key={number}>
                   <b>{number}<span>♥</span></b><h3>{title}</h3><p>{copy}</p><i>♥ {number}</i>
@@ -479,11 +537,11 @@ export default function BirthdayZine() {
             <article className="letter-paper">
               <p className="eyebrow">dear you...</p>
               <h2>My wish for <em>your new year</em></h2>
-              <p>Happy birthday, love.</p>
-              <p>I hope this year is gentle with you and exciting in all the right ways. I hope you find courage when things feel uncertain, rest when you need it, and so many reasons to be proud of yourself.</p>
-              <p>Thank you for being exactly who you are — for the laughter, the comfort, and all the ordinary moments that become special because they’re with you.</p>
-              <p>Here’s to more dreams, more adventures, and more birthdays together.</p>
-              <strong>Always yours, ♡</strong>
+              <p>happy 24th birthday, my love 🤍</p>
+              <p>i’m so proud of the man you are sayang hardworking, ambitious, strong, and always determined to build the life you want. underneath all of that, you also have such a soft and caring heart, and i feel so lucky that i get to know and love that side of you.</p>
+              <p>i hope 24 brings you closer to every dream you’ve been working toward and gives you even more reasons to be proud of yourself. i’m sorry i can’t be there with you today, but i hope you can still feel how deeply loved and celebrated you are, even from far away.</p>
+              <p>thank you for being you, for choosing me, and for making my life happier just by being in it. happy birthday, sayang. i love you so much 🤍</p>
+              <strong>with all my love, always ♡</strong>
             </article>
           </div>
         )}
@@ -525,10 +583,10 @@ export default function BirthdayZine() {
               </div>
             ) : !dateAccepted ? (
               <div className="date-invite">
-                <div className="ticket-stub"><span>JKT</span><b>ONE VERY SPECIAL DATE</b><small>LOCATION: SECRET • DRESS CODE: CUTE</small></div>
+                <div className="ticket-stub"><span>JKT</span><b>ONE VERY SPECIAL DINNER DATE</b><small>RESTAURANT: SECRET • DRESS CODE: CUTE</small></div>
                 <p className="eyebrow">you’ve unlocked</p>
-                <h2>A birthday date in <em>Jakarta</em></h2>
-                <p>Planned entirely by me for when I come to Jakarta. You only need to bring yourself — and maybe dress a little nice 👀</p>
+                <h2>A birthday dinner in <em>Jakarta</em></h2>
+                <p>A special dinner date planned entirely by me for when I come to Jakarta. You only need to bring yourself — and maybe dress a little nice 👀</p>
                 <h3>Will you go on this date with me?</h3>
                 <div className="decision-area">
                   <button className="paper-button primary" onClick={() => setDateAccepted(true)}>Yes! It’s a date 💖</button>
@@ -547,7 +605,7 @@ export default function BirthdayZine() {
                 <h2>It’s a <em>date!</em></h2>
                 <div className="date-ticket">
                   <div><small>DESTINATION</small><strong>JAKARTA</strong></div>
-                  <div><small>PLAN</small><strong>SURPRISE</strong></div>
+                  <div><small>PLAN</small><strong>DINNER DATE</strong></div>
                   <div><small>PASSENGERS</small><strong>YOU + ME</strong></div>
                   <span>♥ 24 ♥</span>
                 </div>

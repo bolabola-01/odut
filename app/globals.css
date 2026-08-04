@@ -186,6 +186,7 @@ h1 em, h2 em {
 .home-hero > * { position: relative; z-index: 1; }
 .home-hero h1 { font-size: clamp(52px, 8vw, 98px); }
 .home-hero p:last-child { max-width: 490px; color: var(--navy); line-height: 1.7; }
+.home-hero .full-name { margin: 20px 0 8px; color: var(--red); font: 600 22px "Caveat"; }
 .cover-collage { min-height: 260px; position: relative; }
 .record, .big-record { border-radius: 50%; background: repeating-radial-gradient(circle, #171717 0 7px, #2b2929 8px 10px); box-shadow: 10px 16px 24px var(--shadow); display: grid; place-items: center; }
 .record { width: 220px; aspect-ratio: 1; position: absolute; right: 10%; top: 8%; transform: rotate(9deg); }
@@ -226,19 +227,30 @@ h1 em, h2 em {
 .track span { font-weight: 600; }
 .track small { display: block; margin-top: 3px; font-weight: 400; opacity: .65; }
 .track i { color: var(--red); }
+.spotify-list { margin-top: 30px; display: grid; gap: 14px; }
+.spotify-card { padding: 12px; background: var(--blue); box-shadow: 5px 6px 0 rgba(38,62,90,.14); transform: rotate(-.35deg); }
+.spotify-card:nth-child(even) { background: #ded3e3; transform: rotate(.35deg); }
+.spotify-card p { margin: 0 4px 9px; color: var(--navy); font: 600 18px "Caveat"; text-align: left; }
+.spotify-card p b { color: var(--red); margin-right: 8px; }
+.spotify-card iframe { display: block; border-radius: 10px; }
 
 .game-layout { grid-template-columns: .85fr 1.15fr; }
 .maze-card { min-height: 470px; padding: 34px; background: var(--blue); color: var(--navy); text-align: center; transform: rotate(-2deg); box-shadow: 10px 14px 0 rgba(38,62,90,.14); }
 .maze-card p { color: var(--red); font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
 .maze-lines { margin-top: 55px; font: 500 clamp(25px, 5vw, 48px)/1.1 monospace; white-space: nowrap; }
+.anime-card { min-height: 470px; padding: 34px; background: var(--blue); color: var(--navy); text-align: center; transform: rotate(-2deg); box-shadow: 10px 14px 0 rgba(38,62,90,.14); display: grid; place-items: center; align-content: center; gap: 5px; }
+.anime-card p { margin: 0; color: var(--navy); font: 600 clamp(36px, 6vw, 64px)/.9 "Caveat"; }
+.anime-card > b { color: var(--red); font-size: 34px; }.anime-card > span { color: var(--red); font-size: 64px; }.anime-card .pirate-mark { color: var(--navy); }
+.anime-card small { margin-top: 20px; color: var(--red); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
 .quiz-card h2 { margin: 18px 0 34px; font-size: clamp(36px, 5vw, 60px); }
 .quiz-count { color: var(--red); }
+.quiz-count b { padding: 5px 9px; background: var(--navy); color: var(--paper); font-size: 11px; letter-spacing: .1em; }
 .quiz-options { display: grid; gap: 14px; }
 .quiz-result > span { color: var(--red); font-size: 80px; }
 
 .achievement-page, .memory-page { text-align: center; }
-.playing-cards { margin-top: 54px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-.achievement-card { min-height: 360px; padding: 20px; border: 1.5px solid var(--navy); background: var(--paper); color: var(--navy); display: flex; flex-direction: column; text-align: left; box-shadow: 7px 9px 0 var(--blue); }
+.playing-cards { margin-top: 54px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.achievement-card { min-height: 330px; padding: 20px; border: 1.5px solid var(--navy); background: var(--paper); color: var(--navy); display: flex; flex-direction: column; text-align: left; box-shadow: 7px 9px 0 var(--blue); }
 .achievement-card > b, .achievement-card > i { color: var(--red); font-style: normal; display: grid; }
 .achievement-card > b span { font-size: 18px; }
 .achievement-card h3 { margin: auto 0 10px; font: 600 31px/1 "Caveat"; color: var(--red); }
