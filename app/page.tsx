@@ -55,6 +55,13 @@ const coupons = [
   "Dessert or coffee date",
 ];
 
+const boothSlots = [
+  { left: "8.6%", top: "27.1%", width: "39.2%", height: "28.8%", x: 88, y: 416, w: 401, h: 443 },
+  { left: "52.2%", top: "27.1%", width: "38.7%", height: "28.8%", x: 535, y: 416, w: 396, h: 443 },
+  { left: "8.7%", top: "59.5%", width: "39.1%", height: "32.0%", x: 89, y: 914, w: 400, h: 492 },
+  { left: "52.3%", top: "59.5%", width: "38.4%", height: "32.0%", x: 536, y: 914, w: 393, h: 492 },
+];
+
 function Confetti() {
   return (
     <div className="confetti" aria-hidden="true">
@@ -91,7 +98,7 @@ export default function BirthdayZine() {
   const [section, setSection] = useState<Section>("menu");
   const [cameraStarted, setCameraStarted] = useState(false);
   const [cameraError, setCameraError] = useState("");
-  const [capturedPhoto, setCapturedPhoto] = useState("");
+  const [boothPhotos, setBoothPhotos] = useState<string[]>([]);
   const [quizIndex, setQuizIndex] = useState(0);
   const [quizScore, setQuizScore] = useState(0);
   const [quizDone, setQuizDone] = useState(false);
@@ -138,9 +145,73 @@ export default function BirthdayZine() {
     context?.translate(canvas.width, 0);
     context?.scale(-1, 1);
     context?.drawImage(video, 0, 0, canvas.width, canvas.height);
-    setCapturedPhoto(canvas.toDataURL("image/jpeg", 0.92));
+    const photo = canvas.toDataURL("image/jpeg", 0.92);
+    const nextPhotos = [...boothPhotos, photo];
+    setBoothPhotos(nextPhotos);
+    if (nextPhotos.length >= boothSlots.length) {
+      streamRef.current?.getTracks().forEach((track) => track.stop());
+      setCameraStarted(false);
+    } else {
+      requestAnimationFrame(() => {
+        if (videoRef.current && streamRef.current) videoRef.current.srcObject = streamRef.current;
+      });
+    }
+  };
+
+  const retakeLastPhoto = async () => {
+    setBoothPhotos((photos) => photos.slice(0, -1));
+    if (!cameraStarted) await startCamera();
+  };
+
+  const resetPhotobooth = () => {
     streamRef.current?.getTracks().forEach((track) => track.stop());
     setCameraStarted(false);
+    setBoothPhotos([]);
+  };
+
+  const downloadPhotobooth = async () => {
+    if (boothPhotos.length !== boothSlots.length) return;
+    const loadImage = (src: string) => new Promise<HTMLImageElement>((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve(image);
+      image.onerror = reject;
+      image.src = src;
+    });
+    const drawCover = (
+      context: CanvasRenderingContext2D,
+      image: HTMLImageElement,
+      x: number,
+      y: number,
+      width: number,
+      height: number,
+    ) => {
+      const scale = Math.max(width / image.naturalWidth, height / image.naturalHeight);
+      const sourceWidth = width / scale;
+      const sourceHeight = height / scale;
+      const sourceX = (image.naturalWidth - sourceWidth) / 2;
+      const sourceY = (image.naturalHeight - sourceHeight) / 2;
+      context.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, x, y, width, height);
+    };
+    try {
+      const output = document.createElement("canvas");
+      output.width = 1024;
+      output.height = 1536;
+      const context = output.getContext("2d");
+      if (!context) return;
+      const template = await loadImage("/photobooth-template.png");
+      context.drawImage(template, 0, 0, output.width, output.height);
+      const photos = await Promise.all(boothPhotos.map(loadImage));
+      photos.forEach((photo, index) => {
+        const slot = boothSlots[index];
+        drawCover(context, photo, slot.x, slot.y, slot.w, slot.h);
+      });
+      const link = document.createElement("a");
+      link.href = output.toDataURL("image/jpeg", 0.94);
+      link.download = `${birthday.name}-birthday-photobooth.jpg`;
+      link.click();
+    } catch {
+      setCameraError("The photobooth sheet couldn’t be prepared. Please try again.");
+    }
   };
 
   const answerQuiz = (answer: number) => {
@@ -167,8 +238,8 @@ export default function BirthdayZine() {
         <section className="zine-page identity-page">
           <PaperDoodles />
           <p className="eyebrow">this little website belongs to</p>
-          <div className="mini-polaroid" aria-hidden="true">
-            <span>?</span>
+          <div className="mini-polaroid">
+            <img src="/little-oan-cutout.png" alt={`${birthday.name} smiling as a little boy in a party hat`} />
             <b>birthday boy</b>
           </div>
           <h1>Are you<br /><em>{birthday.name}?</em></h1>
@@ -218,7 +289,7 @@ export default function BirthdayZine() {
             <img
               className="childhood-cutout"
               src="/little-oan-cutout.png"
-              alt={`${birthday.name} smiling as a little boy in a birthday hat with number 24 candles`}
+              alt={`${birthday.name} smiling as a little boy in a birthday hat`}
             />
             <span aria-hidden="true">♥</span>
           </div>
@@ -239,30 +310,37 @@ export default function BirthdayZine() {
         <section className="zine-page camera-page">
           <p className="eyebrow">birthday photobooth</p>
           <h1>Say <em>twenty-four!</em></h1>
+          <p className="booth-progress">
+            {boothPhotos.length === 4 ? "Your birthday sheet is ready!" : `${boothPhotos.length} of 4 photos taken`}
+          </p>
           <div className="photo-booth">
-            {!cameraStarted && !capturedPhoto && (
-              <div className="camera-placeholder">
-                <span aria-hidden="true">◎</span>
-                <p>Your camera preview will appear here.</p>
+            <img className="booth-template" src="/photobooth-template.png" alt="RHH is turning 24 birthday photobooth template" />
+            {boothSlots.map((slot, index) => (
+              <div
+                className="booth-slot"
+                key={index}
+                style={{ left: slot.left, top: slot.top, width: slot.width, height: slot.height }}
+              >
+                {boothPhotos[index] && <img src={boothPhotos[index]} alt={`Birthday photobooth photo ${index + 1}`} />}
+                {cameraStarted && index === boothPhotos.length && (
+                  <video ref={videoRef} autoPlay playsInline muted aria-label={`Live camera preview for photo ${index + 1}`} />
+                )}
+                {!cameraStarted && index === boothPhotos.length && boothPhotos.length < 4 && (
+                  <div className="empty-frame"><span>◎</span><small>photo {index + 1}</small></div>
+                )}
               </div>
-            )}
-            {cameraStarted && <video ref={videoRef} autoPlay playsInline muted aria-label="Live camera preview" />}
-            {capturedPhoto && <img src={capturedPhoto} alt="Your captured birthday moment" />}
+            ))}
             <canvas ref={canvasRef} hidden />
-            <div className="booth-caption">HAPPY BIRTHDAY • {birthday.age}</div>
           </div>
           {cameraError && <p className="camera-error" role="alert">{cameraError}</p>}
           <div className="button-row camera-actions">
-            {!cameraStarted && !capturedPhoto && <button className="paper-button primary" onClick={startCamera}>Open camera</button>}
-            {cameraStarted && <button className="paper-button primary" onClick={takePhoto}>Take photo</button>}
-            {capturedPhoto && (
-              <>
-                <button className="paper-button" onClick={() => setCapturedPhoto("")}>Retake</button>
-                <a className="paper-button primary" href={capturedPhoto} download={`${birthday.name}-birthday-photo.jpg`}>Download</a>
-              </>
-            )}
+            {!cameraStarted && boothPhotos.length === 0 && <button className="paper-button primary" onClick={startCamera}>Open camera</button>}
+            {cameraStarted && boothPhotos.length < 4 && <button className="paper-button primary" onClick={takePhoto}>Take photo {boothPhotos.length + 1}</button>}
+            {boothPhotos.length > 0 && <button className="paper-button" onClick={retakeLastPhoto}>Retake last</button>}
+            {boothPhotos.length === 4 && <button className="paper-button primary" onClick={downloadPhotobooth}>Download photobooth</button>}
+            {boothPhotos.length > 0 && <button className="text-button compact" onClick={resetPhotobooth}>Start over</button>}
           </div>
-          <button className="text-button" onClick={enterHome}>{capturedPhoto ? "Go to home →" : "Skip and go home →"}</button>
+          <button className="text-button" onClick={enterHome}>{boothPhotos.length === 4 ? "Go to home →" : "Skip and go home →"}</button>
         </section>
       </main>
     );

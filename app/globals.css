@@ -95,7 +95,7 @@ h1 em, h2 em {
   display: flex;
   flex-direction: column;
 }
-.mini-polaroid span { flex: 1; display: grid; place-items: center; background: var(--blue); color: var(--paper); font: 600 70px "Caveat"; }
+.mini-polaroid img { width: 100%; min-height: 0; flex: 1; object-fit: contain; object-position: center bottom; background: var(--blue); }
 .mini-polaroid b { margin-top: 8px; font: 600 17px "Caveat"; color: var(--red); }
 .button-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 34px; }
 .paper-button {
@@ -161,16 +161,18 @@ h1 em, h2 em {
   to { opacity: 1; transform: translateY(0) rotate(-2deg) scale(1); }
 }
 
-.camera-page { justify-content: flex-start; }
+.camera-page { justify-content: flex-start; min-height: 980px; }
 .camera-page h1 { font-size: clamp(46px, 7vw, 74px); }
-.photo-booth { width: min(100%, 470px); margin: 26px auto 10px; padding: 13px 13px 42px; background: #fff; box-shadow: 8px 12px 0 rgba(38,62,90,.16); transform: rotate(-1deg); }
-.photo-booth video, .photo-booth img, .camera-placeholder { width: 100%; aspect-ratio: 4/3; object-fit: cover; background: var(--navy); display: block; transform: scaleX(-1); }
-.photo-booth img { transform: none; }
-.camera-placeholder { display: grid; place-items: center; align-content: center; gap: 8px; color: var(--paper); transform: none; }
-.camera-placeholder span { font-size: 64px; }
-.camera-placeholder p { margin: 0; }
-.booth-caption { color: var(--red); font: 600 20px "Caveat"; margin-top: 14px; }
+.booth-progress { margin: 14px 0 0; color: var(--red); font: 600 20px "Caveat"; }
+.photo-booth { width: min(100%, 500px); aspect-ratio: 2/3; margin: 18px auto 10px; position: relative; background: var(--paper); box-shadow: 9px 13px 0 rgba(38,62,90,.17); transform: rotate(-.6deg); overflow: hidden; }
+.booth-template { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; }
+.booth-slot { position: absolute; z-index: 2; overflow: hidden; background: rgba(183,204,223,.24); }
+.booth-slot img, .booth-slot video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.booth-slot video { transform: scaleX(-1); }
+.empty-frame { width: 100%; height: 100%; display: grid; place-items: center; align-content: center; gap: 4px; color: var(--navy); background: rgba(255,253,246,.76); }
+.empty-frame span { font-size: 36px; }.empty-frame small { color: var(--red); font: 600 17px "Caveat"; }
 .camera-actions { margin-top: 10px; }
+.camera-actions .compact { margin-top: 0; align-self: center; }
 .camera-error { color: var(--red); }
 
 .site-shell { min-height: 100svh; padding: 86px clamp(18px, 4vw, 58px) 118px; }
@@ -318,7 +320,8 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--red); }
   .paper-doodles { opacity: .6; }
   .cake { transform: scale(.84); margin: 10px auto -8px; }
   .heart-balloon { font-size: 110px; }
-  .childhood-reveal { width: 285px; margin-top: 0; }
+  .childhood-reveal { width: 250px; margin-top: 0; }
+  .camera-page { min-height: 920px; padding-left: 14px; padding-right: 14px; }
   .site-shell { padding: 76px 12px 108px; }
   .site-header { min-height: 56px; }
   .site-header p { display: none; }
