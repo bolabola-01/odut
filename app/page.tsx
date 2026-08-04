@@ -677,10 +677,14 @@ export default function BirthdayZine() {
               </div>
             ) : !dateAccepted ? (
               <div className="date-invite">
-                <div className="ticket-stub"><span>JKT</span><b>ONE VERY SPECIAL DINNER DATE</b><small>RESTAURANT: SECRET • DRESS CODE: CUTE</small></div>
+                <div className="ticket-stub">
+                  <span>PIERRE</span>
+                  <b>ONE VERY SPECIAL BIRTHDAY DINNER • JAKARTA</b>
+                  <small>SATURDAY, 19 SEPTEMBER 2026 • 19:00</small>
+                </div>
                 <p className="eyebrow">you’ve unlocked</p>
-                <h2>A birthday dinner in <em>Jakarta</em></h2>
-                <p>A special dinner date planned entirely by me for when I come to Jakarta. You only need to bring yourself — and maybe dress a little nice 👀</p>
+                <h2>Dinner at <em>Pierre Jakarta</em></h2>
+                <p>Your birthday table for two is officially booked. Saturday, 19 September 2026 from 19:00–21:00, in the semi-outdoor smoking area. You only need to bring yourself — and maybe dress a little nice 👀</p>
                 <h3>Will you go on this date with me?</h3>
                 <div className="decision-area">
                   <button className="paper-button primary" onClick={() => setDateAccepted(true)}>Yes! It’s a date 💖</button>
@@ -698,11 +702,13 @@ export default function BirthdayZine() {
                 <p className="eyebrow">official admission for two</p>
                 <h2>It’s a <em>date!</em></h2>
                 <div className="date-ticket">
-                  <div><small>DESTINATION</small><strong>JAKARTA</strong></div>
-                  <div><small>PLAN</small><strong>DINNER DATE</strong></div>
-                  <div><small>PASSENGERS</small><strong>YOU + ME</strong></div>
+                  <div><small>RESTAURANT</small><strong>PIERRE JAKARTA</strong></div>
+                  <div><small>DATE</small><strong>SAT, 19 SEPT 2026</strong></div>
+                  <div><small>TIME</small><strong>19:00–21:00</strong></div>
+                  <div><small>RESERVATION</small><strong>PARTY OF 2 • SEMI OUTDOOR</strong></div>
                   <span>♥ 24 ♥</span>
                 </div>
+                <p className="reservation-note">Reserved with love by Allyna ♡</p>
                 <h3>Your love coupons are now unlocked</h3>
                 <div className="coupon-grid">
                   {coupons.map((coupon) => {

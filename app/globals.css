@@ -351,9 +351,10 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--red); }
 .date-invite h3, .accepted-date h3 { color: var(--navy); margin-top: 30px; }
 .decision-area { min-height: 140px; margin-top: 8px; display: flex; justify-content: center; align-items: center; gap: 20px; }
 .runaway { transition: transform .16s ease; }
-.date-ticket { margin: 36px auto 28px; padding: 26px; border: 2px solid var(--red); border-left: 10px dotted var(--cream); border-right: 10px dotted var(--cream); background: #efe0c5; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; position: relative; transform: rotate(-1deg); }
+.date-ticket { margin: 36px auto 18px; padding: 26px; border: 2px solid var(--red); border-left: 10px dotted var(--cream); border-right: 10px dotted var(--cream); background: #efe0c5; display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; position: relative; transform: rotate(-1deg); }
 .date-ticket div { display: grid; gap: 4px; }.date-ticket small { color: var(--red); letter-spacing: .12em; }.date-ticket strong { color: var(--navy); }
 .date-ticket > span { grid-column: 1/-1; color: var(--red); letter-spacing: .5em; }
+.reservation-note { margin: 0 0 34px; color: var(--red); font: 600 23px "Caveat"; }
 .coupon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
 .coupon { min-height: 150px; padding: 20px; border: 2px dashed var(--red); background: var(--paper); color: var(--navy); display: grid; place-items: center; cursor: pointer; transition: transform .2s ease, background .2s ease; }
 .coupon:hover { transform: rotate(-1deg); }.coupon.redeemed { background: var(--blue); transform: rotate(1deg); }
