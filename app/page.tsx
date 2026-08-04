@@ -550,10 +550,16 @@ export default function BirthdayZine() {
             <p className="eyebrow">to many more birthdays together</p>
             <h2>A few frames from <em>us</em></h2>
             <div className="photo-strip">
-              {["our first favorite", "the blurry one", "a very good day", "more to come"].map((label, index) => (
-                <div className={`memory-frame memory-${index + 1}`} key={label}>
-                  <div><span>+</span><small>add photo</small></div><p>{label}</p>
-                </div>
+              {[
+                { src: "/memory-pasta.jpg", label: "us at our fav pasta place", alt: "Oan and Allyna together at their favorite pasta place", shape: "landscape" },
+                { src: "/memory-photobooth.jpg", label: "cute photobooth of us", alt: "Oan and Allyna hugging in a cute photobooth picture", shape: "landscape" },
+                { src: "/memory-first-favorite.jpg", label: "first favorite <3", alt: "A sweet candid memory of Oan and Allyna", shape: "portrait" },
+                { src: "/memory-bali.jpg", label: "bali, the start of many more vacation to comeee", alt: "Oan and Allyna smiling together on their Bali vacation", shape: "portrait" },
+              ].map((memory, index) => (
+                <figure className={`memory-frame memory-${index + 1} ${memory.shape}`} key={memory.src}>
+                  <div><img src={memory.src} alt={memory.alt} /></div>
+                  <figcaption>{memory.label}</figcaption>
+                </figure>
               ))}
             </div>
             <p className="hand-note">my favorite place has always been wherever you are. ♡</p>
