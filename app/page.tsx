@@ -214,7 +214,14 @@ export default function BirthdayZine() {
       <main className="stage-shell celebration-stage">
         <Confetti />
         <section className="zine-page celebration-page">
-          <div className="heart-balloon" aria-hidden="true">♥<i /></div>
+          <div className="childhood-reveal">
+            <img
+              className="childhood-cutout"
+              src="/little-oan-cutout.png"
+              alt={`${birthday.name} smiling as a little boy in a birthday hat with number 24 candles`}
+            />
+            <span aria-hidden="true">♥</span>
+          </div>
           <p className="eyebrow">the candle is out!</p>
           <h1>Happy birthday,<br /><em>{birthday.name}</em></h1>
           <p className="lead-copy">
@@ -304,7 +311,11 @@ export default function BirthdayZine() {
         {section === "songs" && (
           <div className="section-layout songs-layout">
             <div className="vinyl-wrap">
-              <div className="big-record"><i>for<br />you</i></div>
+              <img
+                className="vinyl-art"
+                src="/oan-vinyl.png"
+                alt={`Birthday vinyl record with ${birthday.name}’s childhood face in the center`}
+              />
               <span>now spinning</span>
             </div>
             <div className="section-copy">

@@ -135,6 +135,31 @@ h1 em, h2 em {
 @keyframes fall { to { top: 105%; transform: rotate(calc(var(--turn) + 420deg)); } }
 .heart-balloon { position: relative; color: var(--red); font-size: 150px; line-height: .8; margin-bottom: 34px; filter: drop-shadow(8px 10px 0 rgba(183,204,223,.9)); }
 .heart-balloon i { position: absolute; top: 113px; left: 50%; width: 1px; height: 88px; background: var(--navy); transform: rotate(7deg); }
+.childhood-reveal {
+  width: min(100%, 340px);
+  margin: -18px auto 24px;
+  position: relative;
+  animation: cutout-pop .65s cubic-bezier(.2,.9,.25,1.25) both;
+}
+.childhood-cutout {
+  width: 100%;
+  max-height: 330px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(10px 13px 0 rgba(183,204,223,.92));
+}
+.childhood-reveal span {
+  position: absolute;
+  right: -10px;
+  bottom: 3px;
+  color: var(--red);
+  font-size: 68px;
+  transform: rotate(12deg);
+}
+@keyframes cutout-pop {
+  from { opacity: 0; transform: translateY(28px) rotate(-5deg) scale(.72); }
+  to { opacity: 1; transform: translateY(0) rotate(-2deg) scale(1); }
+}
 
 .camera-page { justify-content: flex-start; }
 .camera-page h1 { font-size: clamp(46px, 7vw, 74px); }
@@ -183,6 +208,16 @@ h1 em, h2 em {
 .section-copy > p:not(.eyebrow) { color: var(--navy); line-height: 1.7; }
 .vinyl-wrap { text-align: center; color: var(--red); font: 600 20px "Caveat"; }
 .big-record { width: min(100%, 390px); aspect-ratio: 1; margin-bottom: 24px; transform: rotate(-8deg); }
+.vinyl-art {
+  width: min(100%, 430px);
+  aspect-ratio: 1;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 24px;
+  filter: drop-shadow(12px 16px 13px rgba(38,62,90,.22));
+  animation: vinyl-spin 14s linear infinite;
+}
+@keyframes vinyl-spin { to { transform: rotate(360deg); } }
 .track-list { margin-top: 36px; border-top: 1px solid var(--navy); }
 .track { padding: 17px 4px; border-bottom: 1px solid rgba(38,62,90,.35); display: grid; grid-template-columns: 40px 1fr 24px; gap: 10px; align-items: center; color: var(--navy); }
 .track b { color: var(--red); }
@@ -283,6 +318,7 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--red); }
   .paper-doodles { opacity: .6; }
   .cake { transform: scale(.84); margin: 10px auto -8px; }
   .heart-balloon { font-size: 110px; }
+  .childhood-reveal { width: 285px; margin-top: 0; }
   .site-shell { padding: 76px 12px 108px; }
   .site-header { min-height: 56px; }
   .site-header p { display: none; }
