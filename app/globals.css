@@ -361,6 +361,31 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--red); }
 .coupon span, .coupon small { color: var(--red); letter-spacing: .12em; font-size: 10px; }.coupon strong { font: 600 26px "Caveat"; }
 .final-note { margin: 36px auto 0; color: var(--red); font: 600 29px "Caveat"; }
 
+.gift-reasons { margin-top: 82px; padding-top: 64px; border-top: 2px dashed var(--red); text-align: left; }
+.gift-book-intro { max-width: 680px; margin: 0 auto 42px; text-align: center; }
+.gift-book-intro h3 { margin: 0 0 22px; color: var(--navy); font-size: clamp(34px, 6vw, 58px); line-height: 1; }
+.gift-book-intro h3 em { color: var(--red); font-family: "Caveat", cursive; }
+.gift-book-intro > strong { display: block; margin-bottom: 22px; color: var(--red); font: 600 27px "Caveat"; }
+.gift-book-intro > p:not(.eyebrow) { color: var(--navy); line-height: 1.7; }
+.gift-book-intro small { display: block; margin-top: 24px; color: var(--red); font: 600 18px "Caveat"; }
+.gift-reason-list { display: grid; gap: 14px; }
+.gift-reason { border: 1.5px solid var(--navy); background: var(--paper); box-shadow: 5px 6px 0 var(--blue); }
+.gift-reason:nth-child(even) { background: #efe0c5; box-shadow: 5px 6px 0 #ded3e3; }
+.gift-reason summary { min-height: 82px; padding: 18px 22px; display: grid; grid-template-columns: 62px 1fr 36px; gap: 12px; align-items: center; color: var(--navy); cursor: pointer; list-style: none; }
+.gift-reason summary::-webkit-details-marker { display: none; }
+.gift-reason summary span { color: var(--red); font: 600 29px "Caveat"; }
+.gift-reason summary strong { font: 600 28px "Caveat"; }
+.gift-reason summary i { color: var(--red); font-style: normal; font-size: 24px; transition: transform .2s ease; }
+.gift-reason[open] summary i { transform: rotate(45deg); }
+.gift-reason > div { padding: 6px 28px 30px 96px; border-top: 1px dashed rgba(38,62,90,.35); }
+.gift-reason h4 { margin: 22px 0 16px; color: var(--red); font: 600 25px "Caveat"; }
+.gift-reason p { color: var(--navy); line-height: 1.7; }
+.one-last-thing { max-width: 680px; margin: 64px auto 0; padding: 42px; background: var(--blue); color: var(--navy); box-shadow: 8px 10px 0 var(--navy); transform: rotate(-.6deg); text-align: left; }
+.one-last-thing p { line-height: 1.7; }
+.one-last-thing .qualities { color: var(--red); font: 600 28px/1.45 "Caveat"; }
+.one-last-thing > strong { display: block; margin-top: 30px; color: var(--red); font: 600 27px/1.35 "Caveat"; }
+.one-last-thing > span { display: block; margin-top: 24px; color: var(--navy); font: 600 28px "Caveat"; text-align: right; }
+
 .notes-page { text-align: center; }
 .notes-intro { max-width: 620px; margin: 20px auto 0; color: var(--navy); line-height: 1.7; }
 .notes-grid { margin-top: 48px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; align-items: stretch; }
@@ -417,6 +442,11 @@ audio { width: 100%; margin-top: 12px; accent-color: var(--red); }
   .date-ticket { grid-template-columns: 1fr; }
   .date-ticket > span { grid-column: auto; }
   .coupon-grid { grid-template-columns: 1fr; }
+  .gift-reasons { margin-top: 58px; padding-top: 44px; }
+  .gift-reason summary { grid-template-columns: 44px 1fr 26px; padding: 16px; }
+  .gift-reason summary strong { font-size: 24px; }
+  .gift-reason > div { padding: 4px 20px 24px; }
+  .one-last-thing { padding: 28px 22px; }
   .notes-grid { grid-template-columns: 1fr; gap: 15px; }
   .love-note { min-height: 205px; }
   .decision-area { gap: 8px; }

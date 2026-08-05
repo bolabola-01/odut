@@ -125,6 +125,67 @@ const coupons = [
   "Dessert or coffee date",
 ];
 
+const giftReasons = [
+  {
+    number: "01",
+    title: "The Shoes",
+    lead: "Because you’re always moving.",
+    paragraphs: [
+      "You work hard, you’re always chasing the next goal, and somehow you’re always on your way somewhere.",
+      "I hope these carry you through long workdays, new cities, exciting opportunities, and everything you’re dreaming of.",
+      "I know you’ll wear them out one day. I hope it’s because they walked with you through some of the best years of your life.",
+    ],
+  },
+  {
+    number: "02",
+    title: "Dinner",
+    lead: "Because achievements deserve celebrations, but so do ordinary days.",
+    paragraphs: [
+      "I wish I could be with you on your birthday, but until I can, I hope this reminds you that even from far away, I’m celebrating you.",
+      "Eat something good. You deserve it.",
+    ],
+  },
+  {
+    number: "03",
+    title: "The Cake",
+    lead: "Because no birthday should pass without making a wish.",
+    paragraphs: [
+      "I hope every year gives you another reason to believe that all the work you’re putting in today is worth it.",
+      "(And yes… I also just wanted you to have cake.)",
+    ],
+  },
+  {
+    number: "04",
+    title: "Our Date",
+    lead: "Out of everything in this book, this is the only gift that isn’t wrapped.",
+    paragraphs: [
+      "Because my favorite memories with you have never been things—they’ve been moments.",
+      "No matter how busy life gets, I hope we always make time to simply enjoy being together.",
+    ],
+  },
+  {
+    number: "05",
+    title: "The Journal",
+    lead: "This might be my favorite gift.",
+    paragraphs: [
+      "You’re someone with ideas, goals, plans, and dreams. I wanted to give you somewhere to keep them.",
+      "I wrote the first page because every great story has a beginning. The rest of the pages belong to you.",
+      "I hope one day you’ll look back through this journal and realize that many of your biggest dreams started here.",
+    ],
+  },
+  {
+    number: "06",
+    title: "Itachi",
+    lead: "I know Itachi isn’t your favorite just because he’s powerful.",
+    paragraphs: [
+      "You admire him because of what he stood for—his loyalty, his resilience, the quiet sacrifices he made, and the responsibility he carried without asking for recognition.",
+      "I chose this because those are some of the qualities I see in you too. Maybe that’s why you understand his story so well.",
+      "You work hard, carry responsibilities without complaining, and keep moving forward even when no one else sees everything that goes into it.",
+      "I hope this little Lego reminds you not only of one of your favorite characters, but also of the values he represents.",
+    ],
+  },
+];
+
 const boothSlots = [
   { left: "8.8%", top: "27.7%", width: "38.1%", height: "27.4%", x: 90, y: 425, w: 390, h: 420 },
   { left: "53.2%", top: "27.7%", width: "36.9%", height: "27.4%", x: 545, y: 425, w: 378, h: 420 },
@@ -724,7 +785,39 @@ export default function BirthdayZine() {
                     );
                   })}
                 </div>
-                <p className="final-note">Thank you for being born. I can’t wait to celebrate you in person. ♡</p>
+                <section className="gift-reasons">
+                  <div className="gift-book-intro">
+                    <p className="eyebrow">for you.</p>
+                    <h3>Before You Open <em>Everything…</em></h3>
+                    <strong>Happy 24th Birthday.</strong>
+                    <p>Birthdays have never really been about the presents to me. They’re about celebrating the person receiving them. I spent a long time thinking about what to get you this year, and I realized I didn’t just want to buy you things—I wanted every gift to remind you of something I love about you.</p>
+                    <p>So these little notes explain the reason behind each one.</p>
+                    <p>I hope, years from now, you’ll remember not just what I gave you, but why I chose it.</p>
+                    <small>tap each gift to read its note ♡</small>
+                  </div>
+                  <div className="gift-reason-list">
+                    {giftReasons.map((gift) => (
+                      <details className="gift-reason" key={gift.number}>
+                        <summary><span>{gift.number}</span><strong>{gift.title}</strong><i>＋</i></summary>
+                        <div>
+                          <h4>{gift.lead}</h4>
+                          {gift.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+                        </div>
+                      </details>
+                    ))}
+                  </div>
+                  <article className="one-last-thing">
+                    <p className="eyebrow">one last thing</p>
+                    <p>If there’s one thing I hope you remember from this birthday, it’s this:</p>
+                    <p>I don’t admire you because of your job, your ambitions, or what you might achieve one day.</p>
+                    <p>I admire you because of the person you are while you’re working toward those things.</p>
+                    <p className="qualities">You’re thoughtful.<br />You’re driven.<br />You’re resilient.</p>
+                    <p>And I know you’re going to build an incredible life.</p>
+                    <p>Thank you for letting me be part of your journey.</p>
+                    <strong>Happy 24th Birthday.<br />I love you.</strong>
+                    <span>— A</span>
+                  </article>
+                </section>
               </div>
             )}
           </div>
