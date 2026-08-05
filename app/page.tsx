@@ -20,6 +20,7 @@ type Section =
   | "wish"
   | "notes"
   | "voice"
+  | "zine"
   | "gift";
 
 const sections: { id: Section; icon: string; title: string; note: string }[] = [
@@ -30,8 +31,53 @@ const sections: { id: Section; icon: string; title: string; note: string }[] = [
   { id: "wish", icon: "✉", title: "My wish", note: "a letter just for you" },
   { id: "notes", icon: "24", title: "24 notes", note: "for your 24th birthday" },
   { id: "voice", icon: "◖", title: "Voice note", note: "listen with earphones" },
+  { id: "zine", icon: "↟", title: "Zine book", note: "turn the pages + play the maze" },
   { id: "gift", icon: "★", title: "Your present", note: "save this one for last" },
 ];
+
+type MazeDirection = "up" | "right" | "down" | "left";
+type MazeCell = { walls: [boolean, boolean, boolean, boolean] };
+const MAZE_SIZE = 9;
+
+const mazeCells: MazeCell[] = (() => {
+  const cells = Array.from({ length: MAZE_SIZE * MAZE_SIZE }, () => ({ walls: [true, true, true, true] as [boolean, boolean, boolean, boolean] }));
+  const visited = new Set<number>([0]);
+  const stack = [0];
+  let seed = 24;
+  const random = () => {
+    seed = (seed * 9301 + 49297) % 233280;
+    return seed / 233280;
+  };
+  const directions = [
+    { dr: -1, dc: 0, wall: 0, opposite: 2 },
+    { dr: 0, dc: 1, wall: 1, opposite: 3 },
+    { dr: 1, dc: 0, wall: 2, opposite: 0 },
+    { dr: 0, dc: -1, wall: 3, opposite: 1 },
+  ];
+
+  while (stack.length) {
+    const current = stack[stack.length - 1];
+    const row = Math.floor(current / MAZE_SIZE);
+    const col = current % MAZE_SIZE;
+    const choices = directions
+      .map((direction) => ({ ...direction, row: row + direction.dr, col: col + direction.dc }))
+      .filter(({ row: nextRow, col: nextCol }) => nextRow >= 0 && nextRow < MAZE_SIZE && nextCol >= 0 && nextCol < MAZE_SIZE && !visited.has(nextRow * MAZE_SIZE + nextCol));
+
+    if (!choices.length) {
+      stack.pop();
+      continue;
+    }
+
+    const choice = choices[Math.floor(random() * choices.length)]!;
+    const next = choice.row * MAZE_SIZE + choice.col;
+    cells[current].walls[choice.wall] = false;
+    cells[next].walls[choice.opposite] = false;
+    visited.add(next);
+    stack.push(next);
+  }
+
+  return cells;
+})();
 
 const birthdayNotes = [
   "happy 24th birthday to my favorite person 🤍",
@@ -275,9 +321,29 @@ export default function BirthdayZine() {
   const [dateAccepted, setDateAccepted] = useState(false);
   const [noRun, setNoRun] = useState(0);
   const [redeemed, setRedeemed] = useState<string[]>([]);
+  const [zinePage, setZinePage] = useState(0);
+  const [mazePosition, setMazePosition] = useState(0);
+  const [mazeWon, setMazeWon] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
+
+  const moveMaze = (direction: MazeDirection) => {
+    if (mazeWon) return;
+    const wallIndex: Record<MazeDirection, number> = { up: 0, right: 1, down: 2, left: 3 };
+    const delta: Record<MazeDirection, number> = { up: -MAZE_SIZE, right: 1, down: MAZE_SIZE, left: -1 };
+    setMazePosition((current) => {
+      if (mazeCells[current].walls[wallIndex[direction]]) return current;
+      const next = current + delta[direction];
+      if (next === MAZE_SIZE * MAZE_SIZE - 1) setMazeWon(true);
+      return next;
+    });
+  };
+
+  const resetMaze = () => {
+    setMazePosition(0);
+    setMazeWon(false);
+  };
 
   useEffect(() => {
     return () => {
@@ -294,6 +360,28 @@ export default function BirthdayZine() {
       setCameraError("Tap Open camera again if Safari pauses the preview.");
     });
   }, [cameraStarted, boothPhotos.length]);
+
+  useEffect(() => {
+    if (section !== "zine" || zinePage !== 13) return;
+    const directions: Record<string, MazeDirection> = {
+      ArrowUp: "up",
+      ArrowRight: "right",
+      ArrowDown: "down",
+      ArrowLeft: "left",
+      w: "up",
+      d: "right",
+      s: "down",
+      a: "left",
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const direction = directions[event.key];
+      if (!direction) return;
+      event.preventDefault();
+      moveMaze(direction);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [section, zinePage, mazeWon]);
 
   const startCamera = async () => {
     setCameraError("");
@@ -596,6 +684,98 @@ export default function BirthdayZine() {
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        )}
+
+        {section === "zine" && (
+          <div className="zine-reader-page">
+            <div className="zine-reader-heading">
+              <p className="eyebrow">a page-turning birthday book</p>
+              <h2>24 years <em>of you</em></h2>
+              <p>Turn through the book with the arrows or page slider. When you reach page 14, help Oan find Allyna in the playable maze. ♡</p>
+            </div>
+
+            <div className="zine-reader">
+              <button
+                className="page-turn prev"
+                disabled={zinePage === 0}
+                onClick={() => setZinePage((page) => Math.max(0, page - 1))}
+                aria-label="Previous zine page"
+              >←</button>
+
+              <div className="zine-sheet">
+                {zinePage === 13 ? (
+                  <div className="maze-page">
+                    <p>HOW CAN YOU GET TO ME?</p>
+                    <div className="maze-labels"><span>OAN ♥</span><span>ALLYNA ♥</span></div>
+                    <div
+                      className="maze-grid"
+                      role="grid"
+                      aria-label="Playable maze from Oan to Allyna"
+                      style={{ gridTemplateColumns: `repeat(${MAZE_SIZE}, 1fr)` }}
+                    >
+                      {mazeCells.map((cell, index) => (
+                        <div
+                          className="maze-cell"
+                          role="gridcell"
+                          key={index}
+                          style={{
+                            borderTop: cell.walls[0] ? "2px solid var(--navy)" : "2px solid transparent",
+                            borderRight: cell.walls[1] ? "2px solid var(--navy)" : "2px solid transparent",
+                            borderBottom: cell.walls[2] ? "2px solid var(--navy)" : "2px solid transparent",
+                            borderLeft: cell.walls[3] ? "2px solid var(--navy)" : "2px solid transparent",
+                          }}
+                        >
+                          {index === mazePosition && <span className="maze-player" aria-label="Oan’s position">♥</span>}
+                          {index === MAZE_SIZE * MAZE_SIZE - 1 && <span className="maze-goal" aria-label="Allyna">♡</span>}
+                        </div>
+                      ))}
+                    </div>
+
+                    {mazeWon ? (
+                      <div className="maze-win" role="status">
+                        <strong>You found me! ♡</strong>
+                        <button className="paper-button" onClick={resetMaze}>Play again</button>
+                      </div>
+                    ) : (
+                      <>
+                        <p className="maze-help">use arrow keys, WASD, or the buttons</p>
+                        <div className="maze-controls" aria-label="Maze controls">
+                          <button className="up" onClick={() => moveMaze("up")} aria-label="Move up">↑</button>
+                          <button className="left" onClick={() => moveMaze("left")} aria-label="Move left">←</button>
+                          <button className="down" onClick={() => moveMaze("down")} aria-label="Move down">↓</button>
+                          <button className="right" onClick={() => moveMaze("right")} aria-label="Move right">→</button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                ) : (
+                  <img
+                    src={`/zine/page-${String(zinePage + 1).padStart(2, "0")}.jpg`}
+                    alt={`Birthday zine page ${zinePage + 1} of 18`}
+                  />
+                )}
+              </div>
+
+              <button
+                className="page-turn next"
+                disabled={zinePage === 17}
+                onClick={() => setZinePage((page) => Math.min(17, page + 1))}
+                aria-label="Next zine page"
+              >→</button>
+            </div>
+
+            <div className="zine-progress">
+              <span>page {zinePage + 1} / 18</span>
+              <input
+                type="range"
+                min="1"
+                max="18"
+                value={zinePage + 1}
+                onChange={(event) => setZinePage(Number(event.target.value) - 1)}
+                aria-label="Jump to a zine page"
+              />
             </div>
           </div>
         )}
