@@ -10,7 +10,7 @@ const birthday = {
   from: "the girl who loves you most",
 };
 
-type Stage = "identity" | "cake" | "celebrate" | "camera" | "home";
+type Stage = "identity" | "reveal" | "celebrate" | "camera" | "home";
 type Section =
   | "menu"
   | "songs"
@@ -310,6 +310,7 @@ export default function BirthdayZine() {
   const [stage, setStage] = useState<Stage>("identity");
   const [soundtrackStarted, setSoundtrackStarted] = useState(false);
   const [rejected, setRejected] = useState(false);
+  const [candleBlown, setCandleBlown] = useState(false);
   const [section, setSection] = useState<Section>("menu");
   const [cameraStarted, setCameraStarted] = useState(false);
   const [cameraError, setCameraError] = useState("");
@@ -490,6 +491,12 @@ export default function BirthdayZine() {
     setSection("menu");
   };
 
+  const blowCandle = () => {
+    if (candleBlown) return;
+    setCandleBlown(true);
+    window.setTimeout(() => setStage("celebrate"), 1150);
+  };
+
   if (stage === "identity") {
     return (
       <SoundtrackShell active={soundtrackStarted}>
@@ -504,7 +511,7 @@ export default function BirthdayZine() {
           <h1>Are you<br /><em>{birthday.name}?</em></h1>
           {!rejected ? (
             <div className="button-row">
-              <button className="paper-button primary" onClick={() => { setSoundtrackStarted(true); setStage("cake"); }}>Yes, that’s me</button>
+              <button className="paper-button primary" onClick={() => { setSoundtrackStarted(true); setCandleBlown(false); setStage("reveal"); }}>Yes, that’s me</button>
               <button className="paper-button" onClick={() => setRejected(true)}>Nope</button>
             </div>
           ) : (
@@ -519,23 +526,45 @@ export default function BirthdayZine() {
     );
   }
 
-  if (stage === "cake") {
+  if (stage === "reveal") {
     return (
       <SoundtrackShell active={soundtrackStarted}>
         <main className="stage-shell blue-stage">
-        <section className="zine-page cake-page">
+        <section className="zine-page reveal-page">
           <PaperDoodles />
-          <p className="eyebrow">make a wish</p>
-          <h1>The birthday<br /><em>boy!</em></h1>
-          <div className="cake" aria-label="Birthday cake with one lit candle">
-            <div className="flame" />
-            <div className="candle" />
-            <div className="icing"><i /><i /><i /><i /><i /></div>
-            <div className="cake-body"><span>HAPPY {birthday.age}</span></div>
-            <div className="cake-plate" />
+          <p className="eyebrow">a tiny birthday surprise...</p>
+          <h1>Look who’s<br /><em>turning 24!</em></h1>
+          <div className={`birthday-reveal ${candleBlown ? "candle-is-blown" : ""}`} aria-label="An animated birthday cup opens to reveal Oan, balloons, Allyna and Oan, and a birthday cake">
+            <div className="reveal-balloon balloon-one" aria-hidden="true"><span>♥</span><i /></div>
+            <div className="reveal-balloon balloon-two" aria-hidden="true"><span>♥</span><i /></div>
+
+            <figure className="face-pop allyna-pop">
+              <div><img src="/memory-photobooth.jpg" alt="Allyna smiling" /></div>
+              <figcaption>allyna ♡</figcaption>
+            </figure>
+            <figure className="face-pop oan-pop">
+              <div><img src="/memory-photobooth.jpg" alt="Oan smiling" /></div>
+              <figcaption>birthday boy!</figcaption>
+            </figure>
+
+            <div className="surprise-cup" aria-hidden="true">
+              <img className="cup-oan" src="/little-oan-cutout.png" alt="" />
+              <div className="cup-lid"><span /></div>
+              <div className="cup-body"><b>24</b><small>birthday boy</small></div>
+            </div>
+
+            <div className="reveal-cake">
+              <div className="cake" aria-label={candleBlown ? "Birthday cake with its candle blown out" : "Birthday cake with one lit candle"}>
+                <div className="flame" />
+                <div className="candle"><span className="candle-smoke">~</span></div>
+                <div className="icing"><i /><i /><i /><i /><i /></div>
+                <div className="cake-body"><span>HAPPY {birthday.age}</span></div>
+                <div className="cake-plate" />
+              </div>
+            </div>
           </div>
-          <button className="paper-button primary" onClick={() => setStage("celebrate")}>Blow the candle</button>
-          <p className="tiny-note">tap the button — wishes are private</p>
+          <button className="paper-button primary blow-button" disabled={candleBlown} onClick={blowCandle}>{candleBlown ? "Wish sent ♡" : "Blow the candle"}</button>
+          <p className="tiny-note">wait for everyone to pop up, then tap to make a wish</p>
         </section>
         </main>
       </SoundtrackShell>
@@ -548,14 +577,7 @@ export default function BirthdayZine() {
         <main className="stage-shell celebration-stage">
         <Confetti />
         <section className="zine-page celebration-page">
-          <div className="childhood-reveal">
-            <img
-              className="childhood-cutout"
-              src="/little-oan-cutout.png"
-              alt={`${birthday.name} smiling as a little boy in a birthday hat`}
-            />
-            <span aria-hidden="true">♥</span>
-          </div>
+          <div className="celebration-heart" aria-hidden="true">♥<i /></div>
           <p className="eyebrow">the candle is out!</p>
           <h1>Happy 24th birthday,<br /><em>my love 🤍</em></h1>
           <p className="lead-copy">
